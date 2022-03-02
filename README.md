@@ -59,49 +59,31 @@
 
 ### イベントハンドラの登録
 
-#### 一般イベント
-
-イベントのタイプはMAXScriptリファレンスを参照。
-
 ```maxscript
+-- 一般イベント
 ::systemEventHandler.Add #SelectionSetChanged observer
-```
-
-#### 時間変更
-
-```maxscript
+-- 時間変更
 ::systemEventHandler.Add #TimeChange observer
-```
-
-#### ビューポート再描画
-
-```maxscript
+-- ビューポート再描画
 ::systemEventHandler.Add #ViewportRedraw observer
 ```
 
+* 一般イベントのタイプはMAXScriptリファレンスを参照。
+
 ### イベントハンドラの登録解除
 
-`observer`は登録時と同じ値を使用する。
-
-#### 一般イベント
-
-イベントのタイプはMAXScriptリファレンスを参照。
-
 ```maxscript
+-- 一般イベント
 ::systemEventHandler.Remove #SelectionSetChanged observer
-```
-
-#### 時間変更
-
-```maxscript
+-- 時間変更
 ::systemEventHandler.Remove #TimeChange observer
-```
-
-#### ビューポート再描画
-
-```maxscript
+-- ビューポート再描画
 ::systemEventHandler.Remove #ViewportRedraw observer
 ```
+
+* `observer`は登録時と同じ値を使用する。
+
+* イベントのタイプはMAXScriptリファレンスを参照。
 
 ### 遅延実行
 
