@@ -23,31 +23,31 @@ struct SystemEventHandlerStruct (
   private globalVarName = "systemEventHandler",
 
   /*
-  public fn Add eventType observer delayInterval:0 = (
-  public fn GetRegisteredCallbackCount eventType = (
-  public fn InvokeGeneralEvent eventType eventParam = (
-  public fn InvokeObserver context params type: = (
-  public fn InvokeTimeChange = (
-  public fn InvokeViewportRedraw = (
-  public fn Remove eventType observer = (
-  public fn Uninstall = (
+  public fn Add eventType observer delayInterval:0 = (),
+  public fn GetRegisteredCallbackCount eventType = (),
+  public fn InvokeGeneralEvent eventType eventParam = (),
+  public fn InvokeObserver context params type: = (),
+  public fn InvokeTimeChange = (),
+  public fn InvokeViewportRedraw = (),
+  public fn Remove eventType observer = (),
+  public fn Uninstall = (),
 
-  private fn createDelayTimer delayInterval = (
-  private fn defineGlobalVar = (
-  private fn destroyGlobalVar = (
-  private fn findObserver eventType observer = (
-  private fn generateGeneralEventScript eventType = (
-  private fn getEventParam eventType = (
-  private fn getEventTypeFromTimer timerObject = (
-  private fn invokeTimer eventType eventParam = (
-  private fn isValidTimer obj = (
-  private fn registerGeneralEventCallback eventType = (
-  private fn registerTimeChangeCallback = (
-  private fn registerViewportRedrawCallback = (
-  private fn unregisterAllCallbacks = (
-  private fn unregisterGeneralEventCallback eventType = (
-  private fn unregisterTimeChangeCallback = (
-  private fn unregisterViewportRedrawCallback = (
+  private fn createDelayTimer delayInterval = (),
+  private fn defineGlobalVar = (),
+  private fn destroyGlobalVar = (),
+  private fn findObserver eventType observer = (),
+  private fn generateGeneralEventScript eventType = (),
+  private fn getEventParam eventType = (),
+  private fn getEventTypeFromTimer timerObject = (),
+  private fn invokeTimer eventType eventParam = (),
+  private fn isValidTimer obj = (),
+  private fn registerGeneralEventCallback eventType = (),
+  private fn registerTimeChangeCallback = (),
+  private fn registerViewportRedrawCallback = (),
+  private fn unregisterAllCallbacks = (),
+  private fn unregisterGeneralEventCallback eventType = (),
+  private fn unregisterTimeChangeCallback = (),
+  private fn unregisterViewportRedrawCallback = (),
   */
 
   /*-
@@ -215,7 +215,6 @@ struct SystemEventHandlerStruct (
   ),
 
   /*-
-  アンインストールする。
   @returns <OkClass>
   */
   public fn Uninstall = (
