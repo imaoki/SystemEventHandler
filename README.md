@@ -16,15 +16,25 @@
 
 `3ds Max 2022.3 Update`
 
-## スクリプトの実行とスタートアップへの登録
+## インストール
 
-01. `Standard\register.ms`を実行する。
+`install.ms`を実行する。
 
-02. `SystemEventHandler\register.ms`を実行する。
+## アンインストール
 
-## スタートアップから登録解除する
+`uninstall.ms`を実行する。
 
-`unregister.ms`を実行する。
+## スタンドアローン版
+
+### インストール
+
+`Distribution\SystemEventHandler.min.ms`を実行する。
+
+### アンインストール
+
+```maxscript
+::systemEventHandler.Uninstall()
+```
 
 ## 使い方
 
@@ -49,11 +59,11 @@
 )
 ```
 
-| 引数      | 内容                                      |
-| --------- | ----------------------------------------- |
-| `context` | 本構造体の`Context`プロパティに設定した値 |
-| `params`  | 発生したイベントの補足情報                |
-| `type:`   | 発生したイベントの名前                    |
+| 引数      | 内容                            |
+| --------- | ------------------------------- |
+| `context` | `Context`プロパティに設定した値 |
+| `params`  | 発生したイベントの補足情報      |
+| `type:`   | 発生したイベントの名前          |
 
 `ObserverStruct`の第二引数には、構造体メソッドの場合はその構造体のインスタンスを、通常の関数の場合は識別可能な任意の値を指定する。
 
@@ -98,4 +108,4 @@
 
 ## ライセンス
 
-[MIT License](https://github.com/imaoki/DocGenerator/blob/main/LICENSE)
+[MIT License](https://github.com/imaoki/SystemEventHandler/blob/main/LICENSE)
