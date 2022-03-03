@@ -25,6 +25,7 @@ struct SystemEventHandlerStruct (
   /*
   public fn Add eventType observer delayInterval:0 = (),
   public fn GetRegisteredCallbackCount eventType = (),
+  public fn Install = (),
   public fn InvokeGeneralEvent eventType eventParam = (),
   public fn InvokeObserver context params type: = (),
   public fn InvokeTimeChange = (),
@@ -33,8 +34,6 @@ struct SystemEventHandlerStruct (
   public fn Uninstall = (),
 
   private fn createDelayTimer delayInterval = (),
-  private fn defineGlobalVar = (),
-  private fn destroyGlobalVar = (),
   private fn findObserver eventType observer = (),
   private fn generateGeneralEventScript eventType = (),
   private fn getEventParam eventType = (),
@@ -120,6 +119,20 @@ struct SystemEventHandlerStruct (
       )
     )
     count
+  ),
+
+  /*-
+  インストールする。
+  @returns <OkClass>
+  @remarks 静的メソッド。
+  */
+  public fn Install = (
+    ::SystemEventHandlerStruct()
+    if isProperty ::startupLoader "RegisterFile" do (
+      ::startupLoader.RegisterFile (getSourceFileName()) installer:true
+    )
+    format "[install]::systemEventHandler\n"
+    ok
   ),
 
   /*-
@@ -215,11 +228,13 @@ struct SystemEventHandlerStruct (
   ),
 
   /*-
+  アンインストールする。
   @returns <OkClass>
   */
   public fn Uninstall = (
     this.unregisterAllCallbacks()
-    this.destroyGlobalVar()
+    ::systemEventHandler = undefined
+    format "[uninstall]::systemEventHandler\n"
     ok
   ),
 
@@ -232,32 +247,6 @@ struct SystemEventHandlerStruct (
     local timerObject = ::std.TimerStruct delayInterval
     timerObject.AddObserver (::std.ObserverStruct this.InvokeObserver timerObject)
     timerObject
-  ),
-
-  /*-
-  グローバル変数を定義する。
-  @returns <OkClass>
-  */
-  private fn defineGlobalVar = (
-    execute ("global " + this.globalVarName)
-    if GlobalVars.IsGlobal this.globalVarName do (
-      GlobalVars.Set this.globalVarName this
-      format "[define]::%\n" this.globalVarName
-    )
-    ok
-  ),
-
-  /*-
-  グローバル変数を破棄する。
-  @returns <OkClass>
-  @remarks 安全性を鑑みて変数名は削除せず、値のみ`undefined`で上書きする。
-  */
-  private fn destroyGlobalVar = (
-    if GlobalVars.IsGlobal this.globalVarName do (
-      GlobalVars.Set this.globalVarName undefined
-      format "[destroy]::%\n" this.globalVarName
-    )
-    ok
   ),
 
   /*-
@@ -486,11 +475,9 @@ struct SystemEventHandlerStruct (
   ),
 
   on Create do (
-    this.defineGlobalVar()
+    ::systemEventHandler = this
     this.delayTimerTable = Dictionary #Name
     this.eventParamTable = Dictionary #Name
     this.observerTable = Dictionary #Name
   )
 )
-::SystemEventHandlerStruct()
-::SystemEventHandlerStruct
