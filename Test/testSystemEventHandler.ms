@@ -186,14 +186,18 @@
           expected = ::TestValueStruct undefined
           assert (actual.Equals expected == true)
 
-          /* ノード削除 */
+          /* Test End */
+          sw.Stop()
+          /* Teardown Start */
+          -- ノード削除
           if isValidNode n1 do delete n1
           if isValidNode n2 do delete n2
-
-          /* コールバック出力 */
+          -- コールバック出力
           format "#GeneralEvent:%\n" (Callbacks.Show asArray:true id:#SystemEventHandler)
           format "#TimeChange:%\n" (showRegisteredTimeCallbacks asArray:true)
           format "#ViewportRedraw:%\n" (showRegisteredRedrawViewsCallbacks asArray:true)
+          /* Teardown End */
+          format "[end %]%ms\n" nowTime (sw.ElapsedMilliseconds as Integer)
         )
         default: ()
       )
@@ -264,12 +268,12 @@
   expectedNodeFreezeParams = n2
   if isValidNode n1 do freeze n1
   if isValidNode n2 do freeze n2
-  /* Test End --------------------------------------------------------------- */
-  sw.Stop()
-  /* Teardown Start --------------------------------------------------------- */
+  -- /* Test End --------------------------------------------------------------- */
+  -- sw.Stop()
+  -- /* Teardown Start --------------------------------------------------------- */
   -- if isValidNode n1 do delete n1
   -- if isValidNode n2 do delete n2
-  /* Teardown End ----------------------------------------------------------- */
-  format "[end %]%ms\n" nowTime (sw.ElapsedMilliseconds as Integer)
+  -- /* Teardown End ----------------------------------------------------------- */
+  -- format "[end %]%ms\n" nowTime (sw.ElapsedMilliseconds as Integer)
   ok
 )
