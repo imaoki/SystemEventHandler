@@ -4,9 +4,9 @@
     ::systemEventHandler.Uninstall()
   )
 
-  if isProperty ::startupLoader "UnregisterScript" do (
+  if isProperty ::startupLoader "UnregisterFile" do (
     local registerFile = substituteString (getSourceFileName()) "unregister.ms" "register.ms"
-    ::startupLoader.UnregisterScript registerFile
+    ::startupLoader.UnregisterFile registerFile
   )
   ok
 )
