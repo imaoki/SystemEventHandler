@@ -18,7 +18,9 @@
 
 ## インストール
 
-`install.ms`を実行する。
+01. 依存スクリプトがある場合は予めインストールしておく。
+
+02. `install.ms`を実行する。
 
 ## アンインストール
 
@@ -28,7 +30,9 @@
 
 ### インストール
 
-`Distribution\SystemEventHandler.min.ms`を実行する。
+01. 依存スクリプトがある場合は予めインストールしておく。
+
+02. `Distribution\SystemEventHandler.min.ms`を実行する。
 
 ### アンインストール
 
