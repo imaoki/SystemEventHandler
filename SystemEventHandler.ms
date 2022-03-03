@@ -233,6 +233,9 @@ struct SystemEventHandlerStruct (
   */
   public fn Uninstall = (
     this.unregisterAllCallbacks()
+    if isProperty ::startupLoader "UnregisterFile" do (
+      ::startupLoader.UnregisterFile (getSourceFileName())
+    )
     ::systemEventHandler = undefined
     format "[uninstall]::systemEventHandler\n"
     ok
