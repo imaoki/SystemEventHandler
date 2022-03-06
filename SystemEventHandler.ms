@@ -128,7 +128,7 @@ struct SystemEventHandlerStruct (
   */
   public fn Install = (
     ::SystemEventHandlerStruct()
-    if isProperty ::startupLoader "RegisterFile" do (
+    if isProperty ::startupLoader #RegisterFile do (
       ::startupLoader.RegisterFile (getSourceFileName()) installer:true
     )
     format "[install]::systemEventHandler\n"
@@ -233,7 +233,7 @@ struct SystemEventHandlerStruct (
   */
   public fn Uninstall = (
     this.unregisterAllCallbacks()
-    if isProperty ::startupLoader "UnregisterFile" do (
+    if isProperty ::startupLoader #UnregisterFile do (
       ::startupLoader.UnregisterFile (getSourceFileName())
     )
     ::systemEventHandler = undefined
