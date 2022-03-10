@@ -434,6 +434,9 @@ struct SystemEventHandlerStruct (
     ok
   ),
 
+  /*- @prop <String> バージョン番号。メジャー、マイナー、パッチの順。 */
+  private version = "1.0.0",
+
   /*- @returns <Name> */
   public fn StructName = #SystemEventHandlerStruct,
 
@@ -475,6 +478,13 @@ struct SystemEventHandlerStruct (
     local isEqualProperties = true
 
     isEqualStructName and isEqualProperties
+  ),
+
+  /*-
+  @returns <String>
+  */
+  public fn GetVersion = (
+    this.version
   ),
 
   on Create do (
