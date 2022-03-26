@@ -1,50 +1,69 @@
 # SystemEventHandler
 
-イベントコールバックの処理を共通化するための仕組みを提供する。
+Provide a mechanism to unify callback processing.
+<!-- コールバックの処理を一本化するための仕組みを提供する。 -->
 
-## 特徴
+## Features
+<!-- 特徴 -->
 
-* 一般イベントコールバック、時間変更コールバック、ビューポート再描画コールバックに対応。
+* Supports general event callback, time change callback, and viewport redraw callback.
+<!-- 一般イベントコールバック、時間変更コールバック、ビューポート再描画コールバックに対応。 -->
 
-* コールバックの遅延実行が可能。
+* Delayed callback execution.
+<!-- コールバックの遅延実行。 -->
 
-## 要件
+## Requirements
+<!-- 要件 -->
 
 * [imaoki/Standard](https://github.com/imaoki/Standard)
 
-## 動作確認
+## Development Environment
+<!-- 開発環境 -->
 
 `3ds Max 2022.3 Update`
 
-## インストール
+## Install
+<!-- インストールする -->
 
-01. 依存スクリプトがある場合は予めインストールしておく。
+01. Dependent scripts should be installed beforehand.
+<!-- 依存スクリプトは予めインストールしておく。 -->
 
-02. `install.ms`を実行する。
+02. Execute `install.ms`.
+<!-- `install.ms`を実行する。 -->
 
-## アンインストール
+## Uninstall
+<!-- アンインストールする -->
 
-`uninstall.ms`を実行する。
+Execute `uninstall.ms`.
+<!-- `uninstall.ms`を実行する。 -->
 
-## スタンドアローン版
+## Standalone version
+<!-- スタンドアローン版 -->
 
-### インストール
+### Install
+<!-- インストールする -->
 
-01. 依存スクリプトがある場合は予めインストールしておく。
+01. Dependent scripts should be installed beforehand.
+<!-- 依存スクリプトは予めインストールしておく。 -->
 
-02. `Distribution\SystemEventHandler.min.ms`を実行する。
+02. Execute `Distribution\SystemEventHandler.min.ms`.
+<!-- `Distribution\SystemEventHandler.min.ms`を実行する。 -->
 
-### アンインストール
+### Uninstall
+<!-- アンインストールする -->
 
 ```maxscript
 ::systemEventHandler.Uninstall()
 ```
 
-## 使い方
+## Usage
+<!-- 使い方 -->
 
-### イベントハンドラの作成
+### Create Event Handler
+<!-- イベントハンドラの作成 -->
 
-[`ObserverStruct`](https://imaoki.github.io/mxskb/mxsdoc/standard-observer.html)を使用してイベントハンドラを作成する。
+Create event handler using [`ObserverStruct`](https://imaoki.github.io/mxskb/mxsdoc/standard-observer.html).
+<!-- [`ObserverStruct`](https://imaoki.github.io/mxskb/mxsdoc/standard-observer.html)を使用してイベントハンドラを作成する。 -->
 
 ```maxscript
 (
@@ -63,53 +82,72 @@
 )
 ```
 
-| 引数      | 内容                            |
-| --------- | ------------------------------- |
-| `context` | `Context`プロパティに設定した値 |
-| `params`  | 発生したイベントの補足情報      |
-| `type:`   | 発生したイベントの名前          |
+| Argument  | Content                             |
+| --------- | ----------------------------------- |
+| `context` | Value set to the `Context` property |
+| `params`  | Additional Event Information        |
+| `type:`   | Event Name                          |
+<!-- `Context`プロパティに設定した値 -->
+<!-- イベントの追加情報 -->
+<!-- イベントの名前 -->
 
-`ObserverStruct`の第二引数には、構造体メソッドの場合はその構造体のインスタンスを、通常の関数の場合は識別可能な任意の値を指定する。
+The second argument of `ObserverStruct` can be any identifiable value.
+<!-- `ObserverStruct`の第二引数には識別可能な任意の値を指定する。 -->
 
-### イベントハンドラの登録
+### Register Event Handler
+<!-- イベントハンドラの登録 -->
 
 ```maxscript
--- 一般イベント
+-- General Event Callback
 ::systemEventHandler.Add #SelectionSetChanged observer
--- 時間変更
+
+-- Time Change Callback
 ::systemEventHandler.Add #TimeChange observer
--- ビューポート再描画
+
+-- Viewport Redraw Callback
 ::systemEventHandler.Add #ViewportRedraw observer
 ```
 
-* 一般イベントのタイプはMAXScriptリファレンスを参照。
+* See MAXScript Reference for general event types.
+<!-- 一般イベントのタイプはMAXScriptリファレンスを参照。 -->
 
-### イベントハンドラの登録解除
+### Unregister Event Handler
+<!-- イベントハンドラの登録解除 -->
 
 ```maxscript
--- 一般イベント
+-- General Event Callback
 ::systemEventHandler.Remove #SelectionSetChanged observer
--- 時間変更
+
+-- Time Change Callback
 ::systemEventHandler.Remove #TimeChange observer
--- ビューポート再描画
+
+-- Viewport Redraw Callback
 ::systemEventHandler.Remove #ViewportRedraw observer
 ```
 
-* `observer`は登録時と同じ値を使用する。
+* Use the same value for `observer` as when registering.
+<!-- `observer`は登録時と同じ値を使用する。 -->
 
-* 一般イベントのタイプはMAXScriptリファレンスを参照。
+* See MAXScript Reference for general event types.
+<!-- 一般イベントのタイプはMAXScriptリファレンスを参照。 -->
 
-### 遅延実行
+### Delayed Execution
+<!-- 遅延実行 -->
 
 ```maxscript
 ::systemEventHandler.Add #SelectionSetChanged observer delayInterval:100
 ```
 
-最後にイベントが通知されてからコールバック関数を呼び出すまでの遅延時間をミリ秒で指定する。
-遅延時間以内に同じイベントが通知された場合は時間をリセットして計測し直す。
-これにより短い間隔で大量に発生した同一イベントの通知を一度にまとめることができる。
-`0`（既定値）を指定した場合はこの遅延処理を行わない。
+* Specify the delay in milliseconds between the last event notification and the callback function call.
+<!-- 最後にイベントが通知されてからコールバック関数を呼び出すまでの遅延時間をミリ秒で指定する。 -->
 
-## ライセンス
+* If the same event is notified within the delay time, the time is reset and measured again.
+<!-- 遅延時間以内に同じイベントが通知された場合は時間をリセットして計測し直す。 -->
+
+* If `0` (default) is specified, this delay processing is not performed.
+<!-- `0`（既定値）を指定した場合はこの遅延処理を行わない。 -->
+
+## License
+<!-- ライセンス -->
 
 [MIT License](https://github.com/imaoki/SystemEventHandler/blob/main/LICENSE)
