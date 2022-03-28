@@ -67,14 +67,12 @@ Create event handler using [`ObserverStruct`](https://imaoki.github.io/mxskb/mxs
 
 ```maxscript
 (
-  fn update context params type: = (
-    if classOf type == Name do (
-      case type of (
-        (#SelectionSetChanged): ()
-        (#TimeChange): ()
-        (#ViewportRedraw): ()
-        default: ()
-      )
+  fn update context type param = (
+    case type of (
+      (#SelectionSetChanged): ()
+      (#TimeChange): ()
+      (#ViewportRedraw): ()
+      default: ()
     )
     ok
   )
@@ -85,11 +83,11 @@ Create event handler using [`ObserverStruct`](https://imaoki.github.io/mxskb/mxs
 | Argument  | Content                             |
 | --------- | ----------------------------------- |
 | `context` | Value set to the `Context` property |
-| `params`  | Additional Event Information        |
-| `type:`   | Event Name                          |
+| `type`    | Event Name                          |
+| `param`   | Event Data                          |
 <!-- `Context`プロパティに設定した値 -->
-<!-- イベントの追加情報 -->
-<!-- イベントの名前 -->
+<!-- イベント名 -->
+<!-- イベントデータ -->
 
 The second argument of `ObserverStruct` can be any identifiable value.
 <!-- `ObserverStruct`の第二引数には識別可能な任意の値を指定する。 -->
