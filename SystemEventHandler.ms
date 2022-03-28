@@ -27,7 +27,7 @@ struct SystemEventHandlerStruct (
   public fn GetRegisteredCallbackCount eventType = (),
   public fn Install = (),
   public fn InvokeGeneralEvent eventType eventParam = (),
-  public fn InvokeObserver context params type: = (),
+  public fn InvokeObserver context type param = (),
   public fn InvokeTimeChange = (),
   public fn InvokeViewportRedraw = (),
   public fn Remove eventType observer = (),
@@ -149,30 +149,26 @@ struct SystemEventHandlerStruct (
   /*-
   イベントに登録したコールバック関数を呼び出す。
   @param context <Struct:TimerStruct>
-  @param params <Array[<Name>]|Any>
-  @param type: <Name>
+  @param type <Name>
+  @param param <Any>
   @returns <OkClass>
   @remarks タイマーオブジェクトから呼ばれる。
   */
-  public fn InvokeObserver context params type: = (
+  public fn InvokeObserver context type param = (
     if this.isValidTimer context and context.GetTicks() > 0 do (
       context.Reset()
-      if classOf params == Array do (
-        for param in params do (
-          case param of (
-            (#Ticks): (
-              local eventType = this.getEventTypeFromTimer context
-              if classOf eventType == Name do (
-                local eventParam = this.getEventParam eventType
-                local observers = this.observerTable[eventType]
-                for observer in observers do (
-                  observer.Callback observer.Context eventParam type:eventType
-                )
-              )
+      case type of (
+        (#Ticks): (
+          local eventType = this.getEventTypeFromTimer context
+          if classOf eventType == Name do (
+            local eventParam = this.getEventParam eventType
+            local observers = this.observerTable[eventType]
+            for observer in observers do (
+              observer.Callback observer.Context eventType eventParam
             )
-            default: ()
           )
         )
+        default: ()
       )
     )
     ok
