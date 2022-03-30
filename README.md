@@ -1,5 +1,8 @@
 # SystemEventHandler
 
+<!-- [![GitHub release (latest by date)](https://img.shields.io/github/v/release/imaoki/SystemEventHandler)](https://github.com/imaoki/SystemEventHandler/releases/latest) -->
+[![GitHub](https://img.shields.io/github/license/imaoki/SystemEventHandler)](https://github.com/imaoki/SystemEventHandler/blob/main/LICENSE)
+
 Provide a mechanism to unify callback processing.
 <!-- コールバックの処理を一本化するための仕組みを提供する。 -->
 
