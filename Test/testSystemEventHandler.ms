@@ -31,7 +31,7 @@
   local observer = undefined
 
   local testNotification
-  fn testNotification context type param = (
+  fn testNotification type param = (
     -- format "testNotification type:% param:%\n" type param
     case type of (
       (#NodeFreeze): (
@@ -207,7 +207,7 @@
   testDef = fileIn (pathUtility.GetFullPath @"..\SystemEventHandler.ms")
   testObj = testDef()
 
-  observer = ::std.ObserverStruct testNotification testObj
+  observer = ::std.ObserverStruct testNotification
   /* Setup End -------------------------------------------------------------- */
   sw.Start()
   /* Test Start ------------------------------------------------------------- */

@@ -1,4 +1,23 @@
 /*! © 2022 imaoki | MIT License | https://github.com/imaoki */
+(
+  local hasMetRequirements
+  fn hasMetRequirements = (
+    isStruct ::std \
+        and isProperty ::std #StructName \
+        and classOf ::std.StructName == MAXScriptFunction \
+        and ::std.StructName() == #StandardStruct
+  )
+  if not hasMetRequirements() do (
+    local fileClass = DotNetClass "System.IO.File"
+    local pathClass = DotNetClass "System.IO.Path"
+    local currentDir = pathClass.GetDirectoryName (getSourceFileName())
+    local standardFile = currentDir + @"\Standard.min.ms"
+    if fileClass.Exists standardFile do fileIn standardFile
+  )
+  if not hasMetRequirements() do (
+    format "[error]Requirement not met.\n"
+  )
+)
 /*- @var <Struct:SystemEventHandlerStruct> */
 global systemEventHandler
 /*-
@@ -27,7 +46,7 @@ struct SystemEventHandlerStruct (
   public fn GetRegisteredCallbackCount eventType = (),
   public fn Install = (),
   public fn InvokeGeneralEvent eventType eventParam = (),
-  public fn InvokeObserver context type param = (),
+  public fn InvokeObserver type param = (),
   public fn InvokeTimeChange = (),
   public fn InvokeViewportRedraw = (),
   public fn Remove eventType observer = (),
@@ -57,7 +76,7 @@ struct SystemEventHandlerStruct (
   | `#TimeChange`     | 時間変更           |
   | `#ViewportRedraw` | ビューポート再描画 |
   | その他            | 一般イベント       |
-  @param observer <Struct:ObserverStruct> `Callback`プロパティにはイベントコールバック用のメソッドを設定する。詳細は`ObserverStruct`のドキュメントを参照。
+  @param observer <Struct:ObserverStruct> `Update`プロパティにはイベントコールバック用のメソッドを設定する。詳細は`ObserverStruct`のドキュメントを参照。
   @param delayInterval: <Integer> 最後にイベントが通知されてからコールバック関数を呼び出すまでの遅延時間。ミリ秒で指定する。既定値は`0`。
   遅延時間以内に同じイベントが通知された場合は時間をリセットして計測し直す。
   これにより短い間隔で大量に発生した同一イベントの通知を一度にまとめることができる。
@@ -148,23 +167,22 @@ struct SystemEventHandlerStruct (
 
   /*-
   イベントに登録したコールバック関数を呼び出す。
-  @param context <Struct:TimerStruct>
   @param type <Name>
-  @param param <Any>
+  @param param <Struct:TimerStruct>
   @returns <OkClass>
   @remarks タイマーオブジェクトから呼ばれる。
   */
-  public fn InvokeObserver context type param = (
-    if this.isValidTimer context and context.GetTicks() > 0 do (
-      context.Reset()
+  public fn InvokeObserver type param = (
+    if this.isValidTimer param and param.GetTicks() > 0 do (
+      param.Reset()
       case type of (
         (#Ticks): (
-          local eventType = this.getEventTypeFromTimer context
+          local eventType = this.getEventTypeFromTimer param
           if classOf eventType == Name do (
             local eventParam = this.getEventParam eventType
             local observers = this.observerTable[eventType]
             for observer in observers do (
-              observer.Callback observer.Context eventType eventParam
+              observer.Update eventType eventParam
             )
           )
         )
@@ -244,7 +262,7 @@ struct SystemEventHandlerStruct (
   */
   private fn createDelayTimer delayInterval = (
     local timerObject = ::std.TimerStruct delayInterval
-    timerObject.AddObserver (::std.ObserverStruct this.InvokeObserver timerObject)
+    timerObject.StateChanged.Subscribe (::std.ObserverStruct this.InvokeObserver)
     timerObject
   ),
 
@@ -431,7 +449,7 @@ struct SystemEventHandlerStruct (
   ),
 
   /*- @prop <String> バージョン番号。メジャー、マイナー、パッチの順。 */
-  private version = "1.1.0",
+  private version = "1.2.1",
 
   /*- @returns <Name> */
   public fn StructName = #SystemEventHandlerStruct,
