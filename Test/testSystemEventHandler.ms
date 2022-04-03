@@ -28,8 +28,6 @@
   local expectedTimeChangeParam = undefined
   local expectedViewportRedrawParam = undefined
 
-  local observer = undefined
-
   local testNotification
   fn testNotification type param = (
     -- format "testNotification type:% param:%\n" type param
@@ -44,7 +42,7 @@
           /* Add */
           -- #NodeNameSet
           nodeNameSetCount = 0
-          actual = ::TestValueStruct (testObj.Add #NodeNameSet observer delayInterval:100)
+          actual = ::TestValueStruct (testObj.Add #NodeNameSet testNotification delayInterval:100)
           expected = ::TestValueStruct true
           assert (actual.Equals expected == true)
           -- コールバック確認
@@ -68,7 +66,7 @@
           -- #TimeChange
           timeChangeCount = 0
           ::sliderTime = 0f
-          actual = ::TestValueStruct (testObj.Add #TimeChange observer delayInterval:100)
+          actual = ::TestValueStruct (testObj.Add #TimeChange testNotification delayInterval:100)
           expected = ::TestValueStruct true
           assert (actual.Equals expected == true)
           -- 現在時間を変更
@@ -87,7 +85,7 @@
           -- #ViewportRedraw
           viewportRedrawCount = 0
           Viewport.SetTM (Matrix3 [0.707107, 0.353715, -0.612279] [-0.707107, 0.353715, -0.612279] [0, 0.865894, 0.500228] [0, 0, 0])
-          actual = ::TestValueStruct (testObj.Add #ViewportRedraw observer delayInterval:10)
+          actual = ::TestValueStruct (testObj.Add #ViewportRedraw testNotification delayInterval:10)
           expected = ::TestValueStruct true
           assert (actual.Equals expected == true)
           -- ビューポート変換行列を設定
@@ -141,7 +139,7 @@
 
         /* Remove */
         -- #NodeFreeze
-        actual = ::TestValueStruct (testObj.Remove #NodeFreeze observer)
+        actual = ::TestValueStruct (testObj.Remove #NodeFreeze testNotification)
         expected = ::TestValueStruct true
         assert (actual.Equals expected == true)
         -- コールバック確認
@@ -149,7 +147,7 @@
         expected = ::TestValueStruct 0
         assert (actual.Equals expected == true)
         -- #NodeNameSet
-        actual = ::TestValueStruct (testObj.Remove #NodeNameSet observer)
+        actual = ::TestValueStruct (testObj.Remove #NodeNameSet testNotification)
         expected = ::TestValueStruct true
         assert (actual.Equals expected == true)
         -- コールバック確認
@@ -157,7 +155,7 @@
         expected = ::TestValueStruct 0
         assert (actual.Equals expected == true)
         -- #TimeChange
-        actual = ::TestValueStruct (testObj.Remove #TimeChange observer)
+        actual = ::TestValueStruct (testObj.Remove #TimeChange testNotification)
         expected = ::TestValueStruct true
         assert (actual.Equals expected == true)
         -- コールバック確認
@@ -165,7 +163,7 @@
         expected = ::TestValueStruct 0
         assert (actual.Equals expected == true)
         -- #ViewportRedraw
-        actual = ::TestValueStruct (testObj.Remove #ViewportRedraw observer)
+        actual = ::TestValueStruct (testObj.Remove #ViewportRedraw testNotification)
         expected = ::TestValueStruct true
         assert (actual.Equals expected == true)
         -- コールバック確認
@@ -206,8 +204,6 @@
 
   testDef = fileIn (pathUtility.GetFullPath @"..\SystemEventHandler.ms")
   testObj = testDef()
-
-  observer = ::std.ObserverStruct testNotification
   /* Setup End -------------------------------------------------------------- */
   sw.Start()
   /* Test Start ------------------------------------------------------------- */
@@ -247,7 +243,7 @@
   /* Add */
   -- #NodeFreeze
   nodeFreezeCount = 0
-  actual = ::TestValueStruct (testObj.Add #NodeFreeze observer delayInterval:100)
+  actual = ::TestValueStruct (testObj.Add #NodeFreeze testNotification delayInterval:100)
   expected = ::TestValueStruct true
   assert (actual.Equals expected == true)
   -- コールバック確認

@@ -35,7 +35,7 @@ struct SystemEventHandlerStruct (
   private delayTimerTable,
   /*- @prop <Dictionary <Name> <Any>> イベント毎の補足情報。 */
   private eventParamTable,
-  /*- @prop <Dictionary <Name> <Array[<Struct:ObserverStruct>]>> イベント毎のオブザーバ。 */
+  /*- @prop <Dictionary <Name> <Array[<MAXScriptFunction>]>> イベント毎のオブザーバ。 */
   private observerTable,
 
   /*- @prop <String> 自己のインスタンスを格納するグローバル変数の名前。既定値は`"systemEventHandler"`。 */
@@ -76,7 +76,7 @@ struct SystemEventHandlerStruct (
   | `#TimeChange`     | 時間変更           |
   | `#ViewportRedraw` | ビューポート再描画 |
   | その他            | 一般イベント       |
-  @param observer <Struct:ObserverStruct> `Update`プロパティにはイベントコールバック用のメソッドを設定する。詳細は`ObserverStruct`のドキュメントを参照。
+  @param observer <MAXScriptFunction> イベントコールバック用の関数。詳細は`ObservableStruct`のドキュメントを参照。
   @param delayInterval: <Integer> 最後にイベントが通知されてからコールバック関数を呼び出すまでの遅延時間。ミリ秒で指定する。既定値は`0`。
   遅延時間以内に同じイベントが通知された場合は時間をリセットして計測し直す。
   これにより短い間隔で大量に発生した同一イベントの通知を一度にまとめることができる。
@@ -182,7 +182,7 @@ struct SystemEventHandlerStruct (
             local eventParam = this.getEventParam eventType
             local observers = this.observerTable[eventType]
             for observer in observers do (
-              observer.Update eventType eventParam
+              observer eventType eventParam
             )
           )
         )
@@ -220,7 +220,7 @@ struct SystemEventHandlerStruct (
   | `#TimeChange`     | 時間変更           |
   | `#ViewportRedraw` | ビューポート再描画 |
   | その他            | 一般イベント       |
-  @param observer <Struct:ObserverStruct>
+  @param observer <MAXScriptFunction>
   @returns <BooleanClass> 成功した場合は`true`、失敗した場合は`false`。
   */
   public fn Remove eventType observer = (
@@ -238,7 +238,7 @@ struct SystemEventHandlerStruct (
         removeDictValue this.observerTable eventType
       )
     )
-    this.findObserver eventType observer == 0
+    this.findObserver eventType observer <= 0
   ),
 
   /*-
@@ -262,22 +262,25 @@ struct SystemEventHandlerStruct (
   */
   private fn createDelayTimer delayInterval = (
     local timerObject = ::std.TimerStruct delayInterval
-    timerObject.StateChanged.Subscribe (::std.ObserverStruct this.InvokeObserver)
+    timerObject.StateChanged.Subscribe this.InvokeObserver
     timerObject
   ),
 
   /*-
   @param eventType <Name>
-  @param observer <Struct:ObserverStruct>
+  @param observer <MAXScriptFunction>
   @returns <Integer>
   */
   private fn findObserver eventType observer = (
-    local index = 0
-    if hasDictValue this.observerTable eventType do (
+    local index = -1
+    if classOf observer == MAXScriptFunction do (
+      index = 0
+    )
+    if index == 0 and hasDictValue this.observerTable eventType do (
       local observers = this.observerTable[eventType]
       if classOf observers == Array do (
         for i = 1 to observers.Count while index == 0 do (
-          if observers[i].Equals observer do (
+          if observers[i] == observer do (
             index = i
           )
         )
@@ -449,7 +452,7 @@ struct SystemEventHandlerStruct (
   ),
 
   /*- @prop <String> バージョン番号。メジャー、マイナー、パッチの順。 */
-  private version = "1.2.1",
+  private version = "1.3.0",
 
   /*- @returns <Name> */
   public fn StructName = #SystemEventHandlerStruct,
