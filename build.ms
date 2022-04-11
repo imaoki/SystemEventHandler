@@ -20,5 +20,7 @@
   /* 最小化ファイルを保存 */
   code = mp.Minify code
   mp.WriteAllText @".\Distribution\SystemEventHandler.min.ms" code
+  /* ファイルコピー */
+  -- mp.CopyDirectory @".\SystemEventHandler.SubDir" @".\Distribution\SystemEventHandler.SubDir"
   ok
 )
