@@ -97,13 +97,13 @@
 <!-- ### Register Event Handler -->
 
 ```maxscript
--- General Event Callback
+-- 一般イベントコールバック
 ::systemEventHandler.Add #SelectionSetChanged observer
 
--- Time Change Callback
+-- 時間変更コールバック
 ::systemEventHandler.Add #TimeChange observer
 
--- Viewport Redraw Callback
+-- ビューポート再描画コールバック
 ::systemEventHandler.Add #ViewportRedraw observer
 ```
 
@@ -114,13 +114,13 @@
 <!-- ### Unregister Event Handler -->
 
 ```maxscript
--- General Event Callback
+-- 一般イベントコールバック
 ::systemEventHandler.Remove #SelectionSetChanged observer
 
--- Time Change Callback
+-- 時間変更コールバック
 ::systemEventHandler.Remove #TimeChange observer
 
--- Viewport Redraw Callback
+-- ビューポート再描画コールバック
 ::systemEventHandler.Remove #ViewportRedraw observer
 ```
 
