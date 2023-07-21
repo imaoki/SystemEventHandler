@@ -55,7 +55,7 @@
 
 ### イベントハンドラの作成
 
-[`ObservableStruct`](https://imaoki.github.io/mxskb/mxsdoc/standard-observable.html)を使用してイベントハンドラを作成する。
+[`ObservableStruct`](https://imaoki.github.io/kb/mxsdoc/standard-observable.html)を使用してイベントハンドラを作成する。
 
 ```maxscript
 (
